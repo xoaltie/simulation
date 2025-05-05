@@ -2,14 +2,16 @@
 
 namespace App\Infrastructure;
 
+use App\Core\Entity;
+
 final class Map
 {
     public const int WIDTH = 20;
-    public const int HEIGHT = 20;
+    public const int HEIGHT = 10;
     private static ?Map $instance = null;
 
     /**
-     * @propery array<mixed> $entityList
+     * @var list<Entity> $entityList
      */
     private array $entityList = [];
 
@@ -25,7 +27,7 @@ final class Map
     }
 
     /**
-     * @return array
+     * @return list<Entity>
      */
     public function getEntityList(): array
     {
@@ -33,7 +35,7 @@ final class Map
     }
 
     /**
-     * @param array $entityList
+     * @param list<Entity> $entityList
      * @return void
      */
     public function setEntityList(array $entityList): void
