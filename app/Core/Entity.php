@@ -2,4 +2,7 @@
 
 namespace App\Core;
 
-abstract class Entity {}
+abstract class Entity
+{
+    public string $icon;
+}
