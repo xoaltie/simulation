@@ -6,9 +6,11 @@ final readonly class Renderer
 {
     public function render(Map $map): void
     {
+        echo PHP_EOL;
+
         for ($i = 0; $i < Map::HEIGHT; $i++) {
             for ($j = 0; $j < Map::WIDTH; $j++) {
-                if ($this->isEmptyCell($map, new Coordinates($i, $j))) {
+                if ($map->isEmptyCell(new Coordinates($i, $j))) {
                     echo " " . $this->getEmptyCell() . " ";
 
                     continue;
@@ -19,11 +21,8 @@ final readonly class Renderer
 
             echo PHP_EOL;
         }
-    }
 
-    private function isEmptyCell(Map $map, Coordinates $coordinates): bool
-    {
-        return !array_key_exists($coordinates->convertToKey(), $map->entities);
+        echo PHP_EOL;
     }
 
     private function getEmptyCell(): string

@@ -21,4 +21,9 @@ final class Map
     {
         return $this->entities[$coordinates->convertToKey()];
     }
+
+    public function isEmptyCell(Coordinates $coordinates): bool
+    {
+        return !array_key_exists($coordinates->convertToKey(), $this->entities);
+    }
 }
