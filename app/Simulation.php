@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Entities\Creature;
 use App\Entities\Grass;
 use App\Entities\Herbivore;
 use App\Entities\Predator;
@@ -15,15 +16,48 @@ final class Simulation
 
     public function start(): void
     {
-        $this->map = new Map();
-        $this->renderer = new Renderer();
+        do {
+            echo "Начать симуляцию?" . PHP_EOL . "Да[Д] или Нет[Н]: ";
+            $input = readline();
 
-        $this->init();
+            if (mb_strtoupper($input) === 'Д') {
+                $this->map = new Map();
+                $this->renderer = new Renderer();
 
-        $this->renderer->render($this->map);
+                $this->init();
+
+                $this->playStep();
+            } elseif (mb_strtoupper($input) === 'Н') {
+                exit();
+            } else {
+                echo "Неизвестная команда" . PHP_EOL;
+            }
+        } while (true);
+
     }
 
-    public function init(): void
+    private function playStep(): void
+    {
+        while (true) {
+            echo "Нажмите \"Д\" чтобы сделать ход: ";
+
+            $input = readline();
+
+            if (mb_strtoupper($input) !== 'Д') {
+                echo "Неизвестная команда" . PHP_EOL;
+                continue;
+            }
+
+            foreach ($this->map->entities as $entity) {
+                if ($entity instanceof Creature) {
+                    $entity->makeMove($this->map);
+                }
+            }
+        }
+
+    }
+
+    private function init(): void
     {
         $this->map->spawn(new Coordinates(5, 2), new Tree());
         $this->map->spawn(new Coordinates(1, 8), new Tree());

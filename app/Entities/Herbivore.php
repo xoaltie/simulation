@@ -2,9 +2,11 @@
 
 namespace App\Entities;
 
+use App\Map;
+
 final class Herbivore extends Creature
 {
-    public function makeMove(): void
+    public function makeMove(Map $map): void
     {
         // TODO: Implement makeMove() method.
     }
