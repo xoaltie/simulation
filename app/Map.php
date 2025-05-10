@@ -14,7 +14,11 @@ final class Map
 
     public function spawn(Coordinates $coordinates, Entity $entity): void
     {
+        $entity->position = $coordinates;
+
         $this->entities[$coordinates->convertToKey()] = $entity;
+
+        ksort($this->entities);
     }
 
     public function getEntity(Coordinates $coordinates): Entity

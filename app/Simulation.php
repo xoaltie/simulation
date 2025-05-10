@@ -26,6 +26,8 @@ final class Simulation
 
                 $this->init();
 
+                $this->renderer->render($this->map);
+
                 $this->playStep();
             } elseif (mb_strtoupper($input) === 'Н') {
                 exit();
@@ -53,6 +55,8 @@ final class Simulation
                     $entity->makeMove($this->map);
                 }
             }
+
+            $this->renderer->render($this->map);
         }
 
     }
@@ -67,9 +71,9 @@ final class Simulation
         $this->map->spawn(new Coordinates(1, 5), new Predator());
         $this->map->spawn(new Coordinates(5, 3), new Predator());
         $this->map->spawn(new Coordinates(8, 8), new Herbivore());
-        $this->map->spawn(new Coordinates(2, 1), new Herbivore());
-        $this->map->spawn(new Coordinates(0, 9), new Herbivore());
-        $this->map->spawn(new Coordinates(9, 2), new Herbivore());
+        //        $this->map->spawn(new Coordinates(2, 1), new Herbivore());
+        //        $this->map->spawn(new Coordinates(0, 9), new Herbivore());
+        //        $this->map->spawn(new Coordinates(9, 2), new Herbivore());
         $this->map->spawn(new Coordinates(4, 4), new Rock());
         $this->map->spawn(new Coordinates(8, 7), new Rock());
     }

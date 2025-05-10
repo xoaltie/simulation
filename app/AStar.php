@@ -7,7 +7,7 @@ final class AStar
     /**
      * @return array<int, Node>|false
      */
-    public static function findPath(Coordinates $start, Coordinates $target): array|false
+    public static function findPath(Map $map, Coordinates $start, string $targetClass): array|false
     {
         /** @var array<int, Node> $reachable */
         $reachable = [
@@ -15,6 +15,18 @@ final class AStar
         ];
         /** @var array<int, Node> $explored */
         $explored = [];
+
+        $targetCoordinates = self::getTargetCoordinates($map, $targetClass);
+
+        $target = self::chooseNearTarget($start, $targetCoordinates);
+
+        $entities = array_filter(array_map(function ($entity) {
+            return new Node($entity->position);
+        }, $map->entities), function ($entity) use ($target) {
+            return !($entity->coordinates === $target);
+        });
+
+        sort($entities);
 
         while (!empty($reachable)) {
             $node = self::chooseNode($target, $reachable);
@@ -33,7 +45,7 @@ final class AStar
 
             $adjacentNode = self::getAdjacentNodes($node);
 
-            $newReachable = array_udiff($adjacentNode, $explored, function (Node $first, Node $second) {
+            $newReachable = array_udiff($adjacentNode, $explored, $entities, function (Node $first, Node $second) {
                 if ($first->coordinates > $second->coordinates) {
                     return 1;
                 } elseif ($first->coordinates < $second->coordinates) {
@@ -47,6 +59,46 @@ final class AStar
         }
 
         return false;
+    }
+
+    /**
+     * @param Map $map
+     * @param string $targetClass
+     * @return array<int, Coordinates>
+     */
+    private static function getTargetCoordinates(Map $map, string $targetClass): array
+    {
+        $targetCoordinates = [];
+
+        foreach ($map->entities as $entity) {
+            if ($entity instanceof $targetClass) {
+                $targetCoordinates[] = $entity->position;
+            }
+        }
+
+        return $targetCoordinates;
+    }
+
+    /**
+     * @param Coordinates $start
+     * @param array<int, Coordinates> $targetCoordinates
+     * @return Coordinates
+     */
+    private static function chooseNearTarget(Coordinates $start, array $targetCoordinates): Coordinates
+    {
+        $minDistance = 999999;
+        $targetPosition = null;
+
+        foreach ($targetCoordinates as $coordinates) {
+            $costDistance = self::estimateDistance($start, $coordinates);
+
+            if ($costDistance < $minDistance) {
+                $minDistance = $costDistance;
+                $targetPosition = $coordinates;
+            }
+        }
+
+        return $targetPosition;
     }
 
     /**
@@ -81,12 +133,14 @@ final class AStar
         $path = [];
 
         while ($target !== null) {
-            $path[] = $target;
+            $path[] = $target->coordinates;
 
             $target = $target->previous;
         }
 
-        return $path;
+        array_pop($path);
+
+        return array_reverse($path);
     }
 
     /**
@@ -100,11 +154,11 @@ final class AStar
             $adjacentNodes[] = new Node(new Coordinates($node->coordinates->row - 1, $node->coordinates->column));
         }
 
-        if ($node->coordinates->column + 1 <= 9) {
+        if ($node->coordinates->column + 1 < Map::WIDTH) {
             $adjacentNodes[] = new Node(new Coordinates($node->coordinates->row, $node->coordinates->column + 1));
         }
 
-        if ($node->coordinates->row + 1 <= 9) {
+        if ($node->coordinates->row + 1 < Map::HEIGHT) {
             $adjacentNodes[] = new Node(new Coordinates($node->coordinates->row + 1, $node->coordinates->column));
         }
 
