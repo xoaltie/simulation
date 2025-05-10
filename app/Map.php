@@ -12,6 +12,11 @@ final class Map
     /** @var array<string, Entity> $entities */
     public array $entities;
 
+    public function spawn(Coordinates $coordinates, Entity $entity): void
+    {
+        $this->entities[$coordinates->convertToKey()] = $entity;
+    }
+
     public function getEntity(Coordinates $coordinates): Entity
     {
         return $this->entities[$coordinates->convertToKey()];
