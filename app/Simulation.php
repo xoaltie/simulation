@@ -2,10 +2,11 @@
 
 namespace App;
 
-use App\Actions\Contracts\ActionContract;
-use App\Actions\Init\MapPrepareAction;
-use App\Infrastructure\Map;
-use App\Infrastructure\Renderer;
+use App\Entities\Grass;
+use App\Entities\Herbivore;
+use App\Entities\Predator;
+use App\Entities\Rock;
+use App\Entities\Tree;
 
 final class Simulation
 {

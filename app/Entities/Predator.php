@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Creatures;
-
-use App\Core\Creature;
+namespace App\Entities;
 
 final class Predator extends Creature
 {
-    public string $icon = "P";
-
     public function makeMove(): void
     {
         // TODO: Implement makeMove() method.
