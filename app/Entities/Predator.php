@@ -8,4 +8,9 @@ final class Predator extends Creature
     {
         // TODO: Implement makeMove() method.
     }
+
+    public function getSprite(): string
+    {
+        return "\u{1F415}";
+    }
 }
