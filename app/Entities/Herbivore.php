@@ -2,39 +2,37 @@
 
 namespace App\Entities;
 
-use App\AStar;
-use App\Coordinates;
 use App\Map;
 
 final class Herbivore extends Creature
 {
     public int $health = 10;
     public int $speed = 1;
-    public ?array $pathToTarget = null;
 
     public function makeMove(Map $map): void
     {
-        if ($this->pathToTarget === null) {
-            $this->pathToTarget = AStar::findPath($map, $this->position, Grass::class);
+        if (empty($this->pathToTarget)) {
+            $this->setPathToTarget($map);
+
+            if (!$this->pathToTarget) {
+                return;
+            }
+
+            $this->setTarget();
         }
 
-        /** @var Coordinates $newPosition */
-        $newPosition = array_shift($this->pathToTarget);
+        $newPosition = $this->getNewPosition();
 
-        if ($map->isEmptyCell($newPosition)) {
-            unset($map->entities[$this->position->convertToKey()]);
-
-            $map->entities[$newPosition->convertToKey()] = $this;
-
-            $this->position = $newPosition;
+        if ($map->isEmptyCell($newPosition)
+            || $newPosition == $this->target) {
+            $this->changePosition($map, $newPosition);
         } else {
-            $this->pathToTarget = AStar::findPath($map, $this->position, Grass::class);
+            $this->setPathToTarget($map);
+            $this->setTarget();
 
-            unset($map->entities[$this->position->convertToKey()]);
+            $newPosition = $this->getNewPosition();
 
-            $map->entities[$newPosition->convertToKey()] = $this;
-
-            $this->position = $newPosition;
+            $this->changePosition($map, $newPosition);
         }
 
     }
