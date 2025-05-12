@@ -18,6 +18,10 @@ final class AStar
 
         $targetCoordinates = self::getTargetCoordinates($map, $targetClass);
 
+        if (empty($targetCoordinates)) {
+            return false;
+        }
+
         $target = self::chooseNearTarget($start, $targetCoordinates);
 
         $entities = array_filter(array_map(function ($entity) {
