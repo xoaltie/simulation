@@ -27,9 +27,22 @@ final class Simulation
 
                 $this->init();
 
-                $this->renderer->render($this->map);
+                echo "Выберите режим: 1 - бесконечный, 2 - пошаговый: ";
 
-                $this->playStep();
+                $input = readline();
+
+                if (mb_strtoupper($input) === '1') {
+                    $this->renderer->render($this->map, $this->stepCount);
+
+                    $this->startSimulation();
+                }
+
+                if (mb_strtoupper($input) === '2') {
+                    $this->renderer->render($this->map, $this->stepCount);
+
+                    $this->playStep();
+                }
+
             } elseif (mb_strtoupper($input) === 'Н') {
                 exit();
             } else {
@@ -37,6 +50,23 @@ final class Simulation
             }
         } while (true);
 
+    }
+
+    private function startSimulation(): void
+    {
+        while (true) {
+            foreach ($this->map->entities as $entity) {
+                if ($entity instanceof Creature) {
+                    $entity->makeMove($this->map);
+                }
+            }
+
+            $this->stepCount++;
+
+            $this->renderer->render($this->map, $this->stepCount);
+
+            sleep(1);
+        }
     }
 
     private function playStep(): void
@@ -57,7 +87,9 @@ final class Simulation
                 }
             }
 
-            $this->renderer->render($this->map);
+            $this->stepCount++;
+
+            $this->renderer->render($this->map, $this->stepCount);
         }
 
     }

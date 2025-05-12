@@ -4,11 +4,18 @@ namespace App;
 
 final readonly class Renderer
 {
-    public function render(Map $map): void
+    public function render(Map $map, int $stepCount): void
+    {
+        $this->renderMap($map);
+        $this->renderStepCount($stepCount);
+    }
+
     private function renderStepCount(int $stepCount): void
     {
         echo "Количество шагов: " . $stepCount . PHP_EOL . PHP_EOL;
     }
+
+    private function renderMap(Map $map): void
     {
         echo PHP_EOL;
 
