@@ -13,6 +13,7 @@ final class Simulation
 {
     private Map $map;
     private Renderer $renderer;
+    private int $stepCount = 0;
 
     public function start(): void
     {
