@@ -14,7 +14,7 @@ final class Coordinates
         return "{$this->row},{$this->column}";
     }
 
-    public function convertToObject(string $key): self
+    public static function convertToObject(string $key): self
     {
         $coordinates = explode(",", $key);
 

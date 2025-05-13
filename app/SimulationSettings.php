@@ -2,9 +2,15 @@
 
 namespace App;
 
+use App\Entities\Grass;
+use App\Entities\Herbivore;
+use App\Entities\Predator;
+
 final readonly class SimulationSettings
 {
-    public const int MAX_GRASS = 3;
-    public const int MAX_HERBIVORE = 4;
-    public const int MAX_PREDATOR = 2;
+    public const array MAX_ENTITIES = [
+        Grass::class => 4,
+        Herbivore::class => 4,
+        Predator::class => 3,
+    ];
 }

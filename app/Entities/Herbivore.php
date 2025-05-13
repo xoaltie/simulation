@@ -8,9 +8,16 @@ final class Herbivore extends Creature
 {
     public int $health = 10;
     public int $speed = 1;
+    public string $targetEntityClass = Grass::class;
 
     public function makeMove(Map $map): void
     {
+        if (!$this->isHealthPositive()) {
+            unset($map->entities[$this->position->convertToKey()]);
+
+            return;
+        }
+
         if (empty($this->pathToTarget)) {
             $this->setPathToTarget($map);
 
@@ -18,23 +25,30 @@ final class Herbivore extends Creature
                 return;
             }
 
-            $this->setTarget();
+            $this->setTargetCoordinates();
+        }
+
+        if (!$this->isTargetValid($map)) {
+            $this->setPathToTarget($map);
+            $this->setTargetCoordinates();
         }
 
         $newPosition = $this->getNewPosition();
 
-        if ($map->isEmptyCell($newPosition)
-            || $newPosition == $this->target) {
-            $this->changePosition($map, $newPosition);
-        } else {
+        if (!$map->isEmptyCell($newPosition)
+            && $newPosition != $this->targetCoordinates) {
             $this->setPathToTarget($map);
-            $this->setTarget();
+
+            if (!$this->pathToTarget) {
+                return;
+            }
+
+            $this->setTargetCoordinates();
 
             $newPosition = $this->getNewPosition();
-
-            $this->changePosition($map, $newPosition);
         }
 
+        $this->changePosition($map, $newPosition);
     }
 
     public function getSprite(): string

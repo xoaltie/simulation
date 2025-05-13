@@ -2,7 +2,9 @@
 
 namespace App;
 
-use App\Entities\Creature;
+use App\Actions\Action;
+use App\Actions\MovementAction;
+use App\Actions\SpawnAction;
 use App\Entities\Grass;
 use App\Entities\Herbivore;
 use App\Entities\Predator;
@@ -14,6 +16,9 @@ final class Simulation
     private Map $map;
     private Renderer $renderer;
     private int $stepCount = 0;
+
+    /** @var array<int, Action> $turnActions */
+    private array $turnActions = [];
 
     public function start(): void
     {
@@ -55,10 +60,8 @@ final class Simulation
     private function startSimulation(): void
     {
         while (true) {
-            foreach ($this->map->entities as $entity) {
-                if ($entity instanceof Creature) {
-                    $entity->makeMove($this->map);
-                }
+            foreach ($this->turnActions as $action) {
+                $action->execute($this->map);
             }
 
             $this->stepCount++;
@@ -81,10 +84,8 @@ final class Simulation
                 continue;
             }
 
-            foreach ($this->map->entities as $entity) {
-                if ($entity instanceof Creature) {
-                    $entity->makeMove($this->map);
-                }
+            foreach ($this->turnActions as $action) {
+                $action->execute($this->map);
             }
 
             $this->stepCount++;
@@ -96,6 +97,9 @@ final class Simulation
 
     private function init(): void
     {
+        $this->turnActions[] = new SpawnAction();
+        $this->turnActions[] = new MovementAction();
+
         $this->map->spawn(new Coordinates(5, 2), new Tree());
         $this->map->spawn(new Coordinates(1, 8), new Tree());
         $this->map->spawn(new Coordinates(0, 2), new Grass());
@@ -104,8 +108,8 @@ final class Simulation
         $this->map->spawn(new Coordinates(1, 5), new Predator());
         $this->map->spawn(new Coordinates(5, 3), new Predator());
         $this->map->spawn(new Coordinates(8, 8), new Herbivore());
-        //        $this->map->spawn(new Coordinates(2, 1), new Herbivore());
-        //        $this->map->spawn(new Coordinates(0, 9), new Herbivore());
+        $this->map->spawn(new Coordinates(2, 1), new Herbivore());
+        $this->map->spawn(new Coordinates(0, 9), new Herbivore());
         //        $this->map->spawn(new Coordinates(9, 2), new Herbivore());
         $this->map->spawn(new Coordinates(4, 4), new Rock());
         $this->map->spawn(new Coordinates(8, 7), new Rock());
