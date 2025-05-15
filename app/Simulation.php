@@ -95,11 +95,20 @@ final class Simulation
     }
 
     private function init(): void
+    {
+        $this->map = new Map();
+        $this->renderer = new Renderer();
+
+        $this->setInitActions();
+        $this->setTurnActions();
+    }
 
     private function setInitActions(): void
     {
         $this->initActions[] = new MapSetupAction();
     }
+
+    private function setTurnActions(): void
     {
         $this->turnActions[] = new SpawnAction();
         $this->turnActions[] = new MovementAction();
