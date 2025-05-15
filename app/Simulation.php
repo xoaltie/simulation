@@ -21,16 +21,13 @@ final class Simulation
 
     public function start(): void
     {
+        $this->init();
+
         do {
             echo "Начать симуляцию?" . PHP_EOL . "Да[Д] или Нет[Н]: ";
             $input = readline();
 
             if (mb_strtoupper($input) === 'Д') {
-                $this->map = new Map();
-                $this->renderer = new Renderer();
-
-                $this->init();
-
                 echo "Выберите режим: 1 - бесконечный, 2 - пошаговый: ";
 
                 $input = readline();
