@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Actions\Action;
+use App\Actions\MapSetupAction;
 use App\Actions\MovementAction;
 use App\Actions\SpawnAction;
 
@@ -11,6 +12,9 @@ final class Simulation
     private Map $map;
     private Renderer $renderer;
     private int $stepCount = 0;
+
+    /** @var array<int, Action> $initActions */
+    private array $initActions = [];
 
     /** @var array<int, Action> $turnActions */
     private array $turnActions = [];
@@ -91,6 +95,11 @@ final class Simulation
     }
 
     private function init(): void
+
+    private function setInitActions(): void
+    {
+        $this->initActions[] = new MapSetupAction();
+    }
     {
         $this->turnActions[] = new SpawnAction();
         $this->turnActions[] = new MovementAction();
