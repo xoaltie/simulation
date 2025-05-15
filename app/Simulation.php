@@ -23,6 +23,8 @@ final class Simulation
     {
         $this->init();
 
+        $this->runInitActions();
+
         do {
             echo "Начать симуляцию?" . PHP_EOL . "Да[Д] или Нет[Н]: ";
             $input = readline();
@@ -56,9 +58,7 @@ final class Simulation
     private function startSimulation(): void
     {
         while (true) {
-            foreach ($this->turnActions as $action) {
-                $action->execute($this->map);
-            }
+            $this->runTurnActions();
 
             $this->stepCount++;
 
@@ -80,9 +80,7 @@ final class Simulation
                 continue;
             }
 
-            foreach ($this->turnActions as $action) {
-                $action->execute($this->map);
-            }
+            $this->runTurnActions();
 
             $this->stepCount++;
 
@@ -109,5 +107,19 @@ final class Simulation
     {
         $this->turnActions[] = new SpawnAction();
         $this->turnActions[] = new MovementAction();
+    }
+
+    private function runInitActions(): void
+    {
+        foreach ($this->initActions as $action) {
+            $action->execute($this->map);
+        }
+    }
+
+    private function runTurnActions(): void
+    {
+        foreach ($this->turnActions as $action) {
+            $action->execute($this->map);
+        }
     }
 }
