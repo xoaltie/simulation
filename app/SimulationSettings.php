@@ -11,6 +11,6 @@ final readonly class SimulationSettings
     public const array MAX_ENTITIES = [
         Grass::class => 4,
         Herbivore::class => 4,
-        Predator::class => 3,
+        Predator::class => 2,
     ];
 }

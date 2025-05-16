@@ -7,7 +7,6 @@ use App\Map;
 final class Herbivore extends Creature
 {
     public int $health = 10;
-    public int $speed = 1;
     public string $targetEntityClass = Grass::class;
 
     public function makeMove(Map $map): void

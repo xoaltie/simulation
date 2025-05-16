@@ -9,7 +9,6 @@ use App\Map;
 abstract class Creature extends Entity
 {
     public int $health;
-    public int $speed;
 
     /** @var array<int, Coordinates>|false|null $pathToTarget */
     public array|false|null $pathToTarget = null;

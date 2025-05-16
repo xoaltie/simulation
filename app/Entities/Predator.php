@@ -7,7 +7,6 @@ use App\Map;
 final class Predator extends Creature
 {
     public int $health = 20;
-    public int $speed = 1;
     public int $bite = 6;
     public string $targetEntityClass = Herbivore::class;
 

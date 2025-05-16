@@ -25,34 +25,19 @@ final class Simulation
 
         $this->runInitActions();
 
-        do {
-            echo "Начать симуляцию?" . PHP_EOL . "Да[Д] или Нет[Н]: ";
-            $input = readline();
+        echo "Начать симуляцию?" . PHP_EOL . "Да[Д] или Нет[Н]: ";
 
+        $input = readline();
+
+        while (true) {
             if (mb_strtoupper($input) === 'Д') {
-                echo "Выберите режим: 1 - бесконечный, 2 - пошаговый: ";
-
-                $input = readline();
-
-                if (mb_strtoupper($input) === '1') {
-                    $this->renderer->render($this->map, $this->stepCount);
-
-                    $this->startSimulation();
-                }
-
-                if (mb_strtoupper($input) === '2') {
-                    $this->renderer->render($this->map, $this->stepCount);
-
-                    $this->playStep();
-                }
-
+                $this->startSimulation();
             } elseif (mb_strtoupper($input) === 'Н') {
                 exit();
             } else {
                 echo "Неизвестная команда" . PHP_EOL;
             }
-        } while (true);
-
+        }
     }
 
     private function startSimulation(): void
@@ -66,27 +51,6 @@ final class Simulation
 
             sleep(1);
         }
-    }
-
-    private function playStep(): void
-    {
-        while (true) {
-            echo "Нажмите \"Д\" чтобы сделать ход: ";
-
-            $input = readline();
-
-            if (mb_strtoupper($input) !== 'Д') {
-                echo "Неизвестная команда" . PHP_EOL;
-                continue;
-            }
-
-            $this->runTurnActions();
-
-            $this->stepCount++;
-
-            $this->renderer->render($this->map, $this->stepCount);
-        }
-
     }
 
     private function init(): void

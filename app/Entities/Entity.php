@@ -8,5 +8,5 @@ abstract class Entity
 {
     public Coordinates $position;
 
-    abstract protected function getSprite(): string;
+    abstract public function getSprite(): string;
 }

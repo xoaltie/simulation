@@ -5,7 +5,7 @@ namespace App;
 final class AStar
 {
     /**
-     * @return array<int, Node>|false
+     * @return false|list<Coordinates>
      */
     public static function findPath(Map $map, Coordinates $start, string $targetClass): array|false
     {
@@ -23,6 +23,10 @@ final class AStar
         }
 
         $target = self::chooseNearTarget($start, $targetCoordinates);
+
+        if ($target === null) {
+            return false;
+        }
 
         $entities = array_filter(array_map(function ($entity) {
             return new Node($entity->position);
@@ -86,9 +90,9 @@ final class AStar
     /**
      * @param Coordinates $start
      * @param array<int, Coordinates> $targetCoordinates
-     * @return Coordinates
+     * @return Coordinates|null
      */
-    private static function chooseNearTarget(Coordinates $start, array $targetCoordinates): Coordinates
+    private static function chooseNearTarget(Coordinates $start, array $targetCoordinates): Coordinates|null
     {
         $minDistance = 999999;
         $targetPosition = null;
@@ -130,7 +134,7 @@ final class AStar
     }
 
     /**
-     * @return array<int, Node>
+     * @return list<Coordinates>
      */
     private static function buildPath(Node $target): array
     {

@@ -35,20 +35,17 @@ final class Map
         return !array_key_exists($coordinates->convertToKey(), $this->entities);
     }
 
-    /**
-     * @return array<int, Coordinates>
-     */
-    //    public function getEmptyCell(): array
-    //    {
-    //        $emptyCell = [];
-    //
-    //        foreach ($this->entities as $coordinates => $entity) {
-    //            $emptyCoordinates =
-    //            if ($this->isEmptyCell(Coordinates::convertToObject($coordinates))){
-    //                $emptyCell[] = ;
-    //            }
-    //        }
-    //
-    //        return $emptyCell;
-    //    }
+    public function getSpawnPosition(): Coordinates|false
+    {
+        do {
+            $coordinates = new Coordinates(random_int(0, Map::HEIGHT - 1), random_int(0, Map::WIDTH - 1));
+
+            if ($this->isEmptyCell($coordinates)) {
+                return $coordinates;
+            }
+
+        } while (!$this->isEmptyCell($coordinates));
+
+        return false;
+    }
 }

@@ -13,11 +13,4 @@ final class Coordinates
     {
         return "{$this->row},{$this->column}";
     }
-
-    public static function convertToObject(string $key): self
-    {
-        $coordinates = explode(",", $key);
-
-        return new Coordinates((int) $coordinates[0], (int) $coordinates[1]);
-    }
 }
