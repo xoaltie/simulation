@@ -17,8 +17,11 @@ final class Map
         $entity->position = $coordinates;
 
         $this->entities[$coordinates->convertToKey()] = $entity;
+    }
 
-        ksort($this->entities);
+    public function removeEntity(Coordinates $coordinates): void
+    {
+        unset($this->entities[$coordinates->convertToKey()]);
     }
 
     public function getEntity(Coordinates $coordinates): Entity|bool

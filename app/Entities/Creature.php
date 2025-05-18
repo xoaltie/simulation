@@ -21,7 +21,7 @@ abstract class Creature extends Entity
 
     protected function changePosition(Map $map, Coordinates $newPosition): void
     {
-        unset($map->entities[$this->position->convertToKey()]);
+        $map->removeEntity($this->position);
 
         $map->entities[$newPosition->convertToKey()] = $this;
 
