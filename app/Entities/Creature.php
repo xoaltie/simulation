@@ -23,9 +23,7 @@ abstract class Creature extends Entity
     {
         $map->removeEntity($this->position);
 
-        $map->entities[$newPosition->convertToKey()] = $this;
-
-        $this->position = $newPosition;
+        $map->spawn($newPosition, $this);
 
     }
 
