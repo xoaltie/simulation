@@ -36,7 +36,9 @@ public class WorldMap {
     }
 
     public void removeEntity(Coordinates coordinates) {
-        this.ensureWithinBounds(coordinates);
+        if (isCellEmpty(coordinates)) {
+            throw new IllegalStateException("Некорректные координаты. Позиция не содержит сущности.");
+        }
         this.entities.remove(coordinates);
     }
 
