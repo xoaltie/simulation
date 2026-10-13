@@ -20,31 +20,31 @@ public class WorldMap {
 
     public boolean isWithinBounds(Coordinates coordinates) {
         return coordinates.x() >= 0 && coordinates.y() >= 0 &&
-                coordinates.x() < this.width && coordinates.y() < this.height;
+                coordinates.x() < width && coordinates.y() < height;
     }
 
     public boolean isCellEmpty(Coordinates coordinates) {
-        this.ensureWithinBounds(coordinates);
-        return !this.entities.containsKey(coordinates);
+        ensureWithinBounds(coordinates);
+        return !entities.containsKey(coordinates);
     }
 
     public void addEntity(Coordinates coordinates, Entity entity) {
-        if (!this.isCellEmpty(coordinates)) {
+        if (!isCellEmpty(coordinates)) {
             throw new IllegalStateException("Некорректные координаты. Позиция занята другой сущностью.");
         }
-        this.entities.put(coordinates, entity);
+        entities.put(coordinates, entity);
     }
 
     public void removeEntity(Coordinates coordinates) {
         if (isCellEmpty(coordinates)) {
             throw new IllegalStateException("Некорректные координаты. Позиция не содержит сущности.");
         }
-        this.entities.remove(coordinates);
+        entities.remove(coordinates);
     }
 
     public Optional<Entity> getEntity(Coordinates coordinates) {
-        this.ensureWithinBounds(coordinates);
-        return Optional.ofNullable(this.entities.get(coordinates));
+        ensureWithinBounds(coordinates);
+        return Optional.ofNullable(entities.get(coordinates));
     }
 
     public int getWidth() {
