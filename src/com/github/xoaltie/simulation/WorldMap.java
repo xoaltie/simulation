@@ -2,10 +2,12 @@ package com.github.xoaltie.simulation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class WorldMap {
     private final int width;
     private final int height;
+
     private final Map<Coordinates, Entity> entities = new HashMap<>();
 
     public WorldMap(int width, int height) {
@@ -38,9 +40,9 @@ public class WorldMap {
         this.entities.remove(coordinates);
     }
 
-    public Entity getEntity(Coordinates coordinates) {
+    public Optional<Entity> getEntity(Coordinates coordinates) {
         this.ensureWithinBounds(coordinates);
-        return this.entities.get(coordinates);
+        return Optional.ofNullable(this.entities.get(coordinates));
     }
 
     public int getWidth() {
