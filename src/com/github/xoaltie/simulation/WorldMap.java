@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+// TODO: добавить проверку на null
+//  перевести сообщения исключений на английский и возможно добавить полезных отладочных данных
 public class WorldMap {
     private final int width;
     private final int height;
