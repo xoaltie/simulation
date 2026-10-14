@@ -2,6 +2,10 @@ package com.github.xoaltie.simulation;
 
 import java.util.Optional;
 
+// TODO: подумать о расхождении получения спрайтов: вроде константы для пустых ячеек и getSprite() для сущностей
+//  заменить sb.append("\n") на System.lineSeparator()
+//  написать отдельный класс, где будут маппиться сущности и их спрайты, а его уже воткнуть как поле в рендерер
+//  и получать из него спрайты через переписанный getSprite()
 public class ConsoleRenderer implements Renderer {
     private static final String EMPTY_CELL_SPRITE = "_";
 
