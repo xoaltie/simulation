@@ -2,7 +2,9 @@ package com.github.xoaltie.simulation.map;
 
 import com.github.xoaltie.simulation.entity.Entity;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -52,6 +54,18 @@ public class WorldMap {
     public Optional<Entity> getEntity(Coordinates coordinates) {
         ensureWithinBounds(coordinates);
         return Optional.ofNullable(entities.get(coordinates));
+    }
+
+    public Coordinates getCoordinates(Entity entity) {
+        Objects.requireNonNull(entity);
+        return entities.entrySet().stream()
+                .filter(entry -> Objects.equals(entry.getValue(), entity))
+                .map(Map.Entry::getKey)
+                .toList().getFirst();
+    }
+
+    public Collection<Entity> getEntities() {
+        return List.copyOf(entities.values());
     }
 
     public int getWidth() {
