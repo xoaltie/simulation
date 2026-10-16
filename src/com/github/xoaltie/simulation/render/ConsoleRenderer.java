@@ -23,7 +23,13 @@ public class ConsoleRenderer implements Renderer {
         Objects.requireNonNull(map);
 
         StringBuilder sb = new StringBuilder();
+        sb.append("  ");
+        for (int i = 0; i < map.getWidth(); i++) {
+            sb.append(" ").append(i).append(" ");
+        }
+        sb.append(System.lineSeparator());
         for (int y = 0; y < map.getHeight(); y++) {
+            sb.append(y).append(" ");
             for (int x = 0; x < map.getWidth(); x++) {
                 Coordinates coordinates = new Coordinates(x, y);
                 Optional<Entity> entity = map.getEntity(coordinates);
