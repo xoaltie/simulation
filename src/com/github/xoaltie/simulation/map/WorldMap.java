@@ -1,4 +1,6 @@
-package com.github.xoaltie.simulation;
+package com.github.xoaltie.simulation.map;
+
+import com.github.xoaltie.simulation.entity.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
