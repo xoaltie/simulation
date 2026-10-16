@@ -4,6 +4,9 @@ import com.github.xoaltie.simulation.entity.Creature;
 import com.github.xoaltie.simulation.entity.Entity;
 import com.github.xoaltie.simulation.entity.Grass;
 import com.github.xoaltie.simulation.entity.Herbivore;
+import com.github.xoaltie.simulation.entity.Predator;
+import com.github.xoaltie.simulation.entity.Rock;
+import com.github.xoaltie.simulation.entity.Tree;
 import com.github.xoaltie.simulation.map.Coordinates;
 import com.github.xoaltie.simulation.map.WorldMap;
 import com.github.xoaltie.simulation.render.Renderer;
@@ -44,16 +47,20 @@ public final class Simulation {
         System.out.printf("Текущий ход: %d\n", turnCounter);
         Collection<Entity> entities = map.getEntities();
         for (Entity entity : entities) {
-            if (entity instanceof Creature) {
-                ((Creature) entity).makeMove(map);
+            if (entity instanceof Creature creature) {
+                creature.makeMove(map);
             }
         }
     }
 
     private void init() {
         map.addEntity(new Coordinates(3, 4), new Herbivore());
+        map.addEntity(new Coordinates(3, 3), new Rock());
         map.addEntity(new Coordinates(0, 2), new Herbivore());
         map.addEntity(new Coordinates(2, 5), new Herbivore());
         map.addEntity(new Coordinates(4, 3), new Grass());
+        map.addEntity(new Coordinates(5, 8), new Grass());
+        map.addEntity(new Coordinates(7, 7), new Tree());
+        map.addEntity(new Coordinates(4, 1), new Predator());
     }
 }
