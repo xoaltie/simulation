@@ -2,10 +2,9 @@ package com.github.xoaltie.simulation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
-// TODO: добавить проверку на null
-//  перевести сообщения исключений на английский и возможно добавить полезных отладочных данных
 public class WorldMap {
     private final int width;
     private final int height;
@@ -21,6 +20,7 @@ public class WorldMap {
     }
 
     public boolean isWithinBounds(Coordinates coordinates) {
+        Objects.requireNonNull(coordinates);
         return coordinates.x() >= 0 && coordinates.y() >= 0 &&
                 coordinates.x() < width && coordinates.y() < height;
     }
@@ -31,17 +31,20 @@ public class WorldMap {
     }
 
     public void addEntity(Coordinates coordinates, Entity entity) {
-        if (!isCellEmpty(coordinates)) {
+        Objects.requireNonNull(entity);
+        ensureWithinBounds(coordinates);
+        Entity previousEntity = entities.putIfAbsent(coordinates, entity);
+        if (previousEntity != null) {
             throw new IllegalStateException("Некорректные координаты. Позиция занята другой сущностью.");
         }
-        entities.put(coordinates, entity);
     }
 
     public void removeEntity(Coordinates coordinates) {
-        if (isCellEmpty(coordinates)) {
+        ensureWithinBounds(coordinates);
+        Entity removedEntity = entities.remove(coordinates);
+        if (removedEntity == null) {
             throw new IllegalStateException("Некорректные координаты. Позиция не содержит сущности.");
         }
-        entities.remove(coordinates);
     }
 
     public Optional<Entity> getEntity(Coordinates coordinates) {
