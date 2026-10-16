@@ -1,11 +1,14 @@
 package com.github.xoaltie.simulation;
 
+import com.github.xoaltie.simulation.entity.Creature;
+import com.github.xoaltie.simulation.entity.Entity;
 import com.github.xoaltie.simulation.entity.Grass;
 import com.github.xoaltie.simulation.entity.Herbivore;
 import com.github.xoaltie.simulation.map.Coordinates;
 import com.github.xoaltie.simulation.map.WorldMap;
 import com.github.xoaltie.simulation.render.Renderer;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -39,6 +42,12 @@ public final class Simulation {
         turnCounter++;
         renderer.render(map);
         System.out.printf("Текущий ход: %d\n", turnCounter);
+        Collection<Entity> entities = map.getEntities();
+        for (Entity entity : entities) {
+            if (entity instanceof Creature) {
+                ((Creature) entity).makeMove(map);
+            }
+        }
     }
 
     private void init() {
