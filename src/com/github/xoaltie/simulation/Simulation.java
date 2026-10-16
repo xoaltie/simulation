@@ -1,5 +1,11 @@
 package com.github.xoaltie.simulation;
 
+import com.github.xoaltie.simulation.entity.Grass;
+import com.github.xoaltie.simulation.entity.Herbivore;
+import com.github.xoaltie.simulation.map.Coordinates;
+import com.github.xoaltie.simulation.map.WorldMap;
+import com.github.xoaltie.simulation.render.Renderer;
+
 import java.util.Objects;
 import java.util.Scanner;
 
