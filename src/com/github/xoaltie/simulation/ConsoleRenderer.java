@@ -1,9 +1,9 @@
 package com.github.xoaltie.simulation;
 
+import java.util.Objects;
 import java.util.Optional;
 
 // TODO: подумать о расхождении получения спрайтов: вроде константы для пустых ячеек и getSprite() для сущностей
-//  заменить sb.append("\n") на System.lineSeparator()
 //  написать отдельный класс, где будут маппиться сущности и их спрайты, а его уже воткнуть как поле в рендерер
 //  и получать из него спрайты через переписанный getSprite()
 public class ConsoleRenderer implements Renderer {
@@ -11,6 +11,8 @@ public class ConsoleRenderer implements Renderer {
 
     @Override
     public void render(WorldMap map) {
+        Objects.requireNonNull(map);
+
         StringBuilder sb = new StringBuilder();
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
@@ -20,7 +22,7 @@ public class ConsoleRenderer implements Renderer {
                         .orElse(EMPTY_CELL_SPRITE);
                 sb.append(" ").append(sprite).append(" ");
             }
-            sb.append("\n");
+            sb.append(System.lineSeparator());
         }
         System.out.print(sb);
     }
