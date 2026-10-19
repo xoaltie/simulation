@@ -2,6 +2,7 @@ package com.github.xoaltie.simulation.map;
 
 import com.github.xoaltie.simulation.entity.Entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +67,20 @@ public class WorldMap {
 
     public Collection<Entity> getEntities() {
         return List.copyOf(entities.values());
+    }
+
+    public List<Coordinates> getEmptyCells() {
+        List<Coordinates> emptyCell = new ArrayList<>();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Coordinates coordinates = new Coordinates(x, y);
+                if (!entities.containsKey(coordinates)) {
+                    emptyCell.add(coordinates);
+                }
+            }
+        }
+
+        return emptyCell;
     }
 
     public int getWidth() {
