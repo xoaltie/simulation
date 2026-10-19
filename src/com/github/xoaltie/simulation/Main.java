@@ -14,9 +14,10 @@ import java.util.List;
 public class Main {
     static void main() {
         WorldMap map = new WorldMap(SimulationConfig.MAP_WIDTH, SimulationConfig.MAP_HEIGHT);
+        EntitySpawner spawner = new EntitySpawner();
         Renderer renderer = new ConsoleRenderer();
-        List<Action> initActions = List.of(new MapPopulationAction());
-        List<Action> turnActions = List.of(new MoveCreaturesAction(), new ReplenishEntitiesAction());
+        List<Action> initActions = List.of(new MapPopulationAction(spawner));
+        List<Action> turnActions = List.of(new MoveCreaturesAction(), new ReplenishEntitiesAction(spawner));
         Simulation simulation = new Simulation(map, renderer, initActions, turnActions);
         simulation.start();
     }
