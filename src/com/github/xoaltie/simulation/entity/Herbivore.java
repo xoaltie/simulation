@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Herbivore extends Creature {
-    public Herbivore() {
-        super(10, 1, new BfsPathFinder());
+    public Herbivore(int health, int speed) {
+        super(health, speed, new BfsPathFinder());
     }
 
     @Override

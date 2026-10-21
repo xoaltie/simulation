@@ -35,7 +35,9 @@ public class ReplenishEntitiesAction implements Action {
                 ));
 
         spawner.spawn(map, SimulationConfig.GRASS_MAX_COUNT - entitiesCount.getOrDefault(Grass.class, 0), Grass::new);
-        spawner.spawn(map, SimulationConfig.HERBIVORE_MAX_COUNT - entitiesCount.getOrDefault(Herbivore.class, 0), Herbivore::new);
-        spawner.spawn(map, SimulationConfig.PREDATOR_MAX_COUNT - entitiesCount.getOrDefault(Predator.class, 0), Predator::new);
+        spawner.spawn(map, SimulationConfig.HERBIVORE_MAX_COUNT - entitiesCount.getOrDefault(Herbivore.class, 0),
+                () -> new Herbivore(SimulationConfig.HERBIVORE_HEALTH, SimulationConfig.HERBIVORE_SPEED));
+        spawner.spawn(map, SimulationConfig.PREDATOR_MAX_COUNT - entitiesCount.getOrDefault(Predator.class, 0),
+                () -> new Predator(SimulationConfig.PREDATOR_HEALTH, SimulationConfig.PREDATOR_SPEED, SimulationConfig.PREDATOR_ATTACK));
     }
 }

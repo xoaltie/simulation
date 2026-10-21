@@ -25,7 +25,9 @@ public class MapPopulationAction implements Action {
         spawner.spawn(map, SimulationConfig.ROCK_START_COUNT, Rock::new);
         spawner.spawn(map, SimulationConfig.TREE_START_COUNT, Tree::new);
         spawner.spawn(map, SimulationConfig.GRASS_START_COUNT, Grass::new);
-        spawner.spawn(map, SimulationConfig.HERBIVORE_START_COUNT, Herbivore::new);
-        spawner.spawn(map, SimulationConfig.PREDATOR_START_COUNT, Predator::new);
+        spawner.spawn(map, SimulationConfig.HERBIVORE_START_COUNT,
+                () -> new Herbivore(SimulationConfig.HERBIVORE_HEALTH, SimulationConfig.HERBIVORE_SPEED));
+        spawner.spawn(map, SimulationConfig.PREDATOR_START_COUNT,
+                () -> new Predator(SimulationConfig.PREDATOR_HEALTH, SimulationConfig.PREDATOR_SPEED, SimulationConfig.PREDATOR_ATTACK));
     }
 }
