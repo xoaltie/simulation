@@ -6,6 +6,7 @@ import com.github.xoaltie.simulation.path.BfsPathFinder;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Herbivore extends Creature {
     public Herbivore(int health, int speed) {
@@ -15,12 +16,24 @@ public class Herbivore extends Creature {
     @Override
     public void makeMove(WorldMap map) {
         Objects.requireNonNull(map);
+
         Coordinates current = map.getCoordinates(this);
         List<Coordinates> path = getPathFinder().find(map, current, Grass.class);
         if (path.isEmpty()) {
             return;
         }
-        System.out.printf("Creature: %s, current position: %s, path to target: %s%n", this.getClass().getSimpleName(), current, path);
-        // TODO: добавить логику поедания травы и перемещения
+
+        // TODO: переопределить логику по подобию с хищником
+        int nextCellIndex = Math.min(getSpeed(), path.size()) - 1;
+        Coordinates nextCell = path.get(nextCellIndex);
+        Optional<Entity> entityOptional = map.getEntity(nextCell);
+        if (entityOptional.isPresent()) {
+            eat(map, nextCell);
+        }
+        map.moveEntity(current, nextCell);
+    }
+
+    private void eat(WorldMap map, Coordinates targetCell) {
+        map.removeEntity(targetCell);
     }
 }

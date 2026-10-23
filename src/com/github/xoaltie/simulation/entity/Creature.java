@@ -30,6 +30,19 @@ public abstract class Creature extends Entity {
         return health;
     }
 
+    public void setHealth(int health) {
+        if (health < 0) {
+            throw new IllegalArgumentException("Здоровье существа не может быть %d!".formatted(health));
+        }
+
+        this.health = health;
+    }
+
+    public void takeDamage(int damage) {
+        int newHealth = Math.max(0, getHealth() - damage);
+        setHealth(newHealth);
+    }
+
     public int getSpeed() {
         return speed;
     }
