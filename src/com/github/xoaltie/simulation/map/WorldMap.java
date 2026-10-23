@@ -83,6 +83,24 @@ public class WorldMap {
         return emptyCell;
     }
 
+    public void moveEntity(Coordinates from, Coordinates to) {
+        Objects.requireNonNull(from);
+        Objects.requireNonNull(to);
+        ensureWithinBounds(from);
+        ensureWithinBounds(to);
+
+        Entity entity = entities.get(from);
+        if (entity == null) {
+            throw new IllegalStateException("Некорректные координаты. Позиция не содержит сущности.");
+        }
+        Entity previousEntity = entities.putIfAbsent(to, entity);
+        if (previousEntity != null) {
+            throw new IllegalStateException("Некорректные координаты. Позиция занята другой сущностью.");
+        }
+
+        entities.remove(from);
+    }
+
     public int getWidth() {
         return width;
     }

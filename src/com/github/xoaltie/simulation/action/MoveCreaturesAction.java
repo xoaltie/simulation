@@ -12,10 +12,13 @@ public class MoveCreaturesAction implements Action {
     public void execute(WorldMap map) {
         Objects.requireNonNull(map);
 
+        // TODO: не нравится вложенность
         Collection<Entity> entities = map.getEntities();
         for (Entity entity : entities) {
             if (entity instanceof Creature creature) {
-                creature.makeMove(map);
+                if (creature.getHealth() > 0) {
+                    creature.makeMove(map);
+                }
             }
         }
     }
