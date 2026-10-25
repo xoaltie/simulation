@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Herbivore extends Creature {
+public final class Herbivore extends Creature {
     public Herbivore(int health, int speed) {
         super(health, speed, new BfsPathFinder());
     }

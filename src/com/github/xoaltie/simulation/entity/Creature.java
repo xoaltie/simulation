@@ -5,7 +5,7 @@ import com.github.xoaltie.simulation.path.PathFinder;
 
 import java.util.Objects;
 
-public abstract class Creature extends Entity {
+public abstract sealed class Creature extends Entity permits Herbivore, Predator {
     private final int speed;
     private final PathFinder pathFinder;
     private int health;

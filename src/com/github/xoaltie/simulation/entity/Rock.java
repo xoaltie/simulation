@@ -1,4 +1,4 @@
 package com.github.xoaltie.simulation.entity;
 
-public class Rock extends Entity {
+public final class Rock extends Entity {
 }

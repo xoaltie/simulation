@@ -1,4 +1,4 @@
 package com.github.xoaltie.simulation.entity;
 
-public class Grass extends Entity {
+public final class Grass extends Entity {
 }
