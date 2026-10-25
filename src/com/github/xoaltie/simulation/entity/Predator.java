@@ -7,7 +7,7 @@ import com.github.xoaltie.simulation.path.BfsPathFinder;
 import java.util.List;
 import java.util.Objects;
 
-public class Predator extends Creature {
+public final class Predator extends Creature {
     private final int attack;
 
     public Predator(int health, int speed, int attack) {
