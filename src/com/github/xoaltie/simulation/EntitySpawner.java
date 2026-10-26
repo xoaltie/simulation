@@ -24,6 +24,7 @@ public final class EntitySpawner {
         }
 
         Collections.shuffle(emptyCell);
+
         for (int count = 0; count < countToSpawn; count++) {
             Coordinates coordinates = emptyCell.get(count);
             map.addEntity(coordinates, supplier.get());

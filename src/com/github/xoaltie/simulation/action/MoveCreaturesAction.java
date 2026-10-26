@@ -13,6 +13,7 @@ public class MoveCreaturesAction implements Action {
         Objects.requireNonNull(map);
 
         Collection<Entity> entities = map.getEntities();
+
         for (Entity entity : entities) {
             if (entity instanceof Creature creature && creature.isAlive()) {
                 creature.makeMove(map);
