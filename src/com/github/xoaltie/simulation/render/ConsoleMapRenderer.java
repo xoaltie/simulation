@@ -7,10 +7,10 @@ import com.github.xoaltie.simulation.map.WorldMap;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class ConsoleRenderer implements Renderer {
+public final class ConsoleMapRenderer implements MapRenderer {
     private final SpriteMapper spriteMapper;
 
-    public ConsoleRenderer(SpriteMapper spriteMapper) {
+    public ConsoleMapRenderer(SpriteMapper spriteMapper) {
         this.spriteMapper = spriteMapper;
     }
 
@@ -19,6 +19,7 @@ public final class ConsoleRenderer implements Renderer {
         Objects.requireNonNull(map);
 
         StringBuilder sb = new StringBuilder();
+        sb.append(System.lineSeparator());
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
                 Coordinates coordinates = new Coordinates(x, y);
