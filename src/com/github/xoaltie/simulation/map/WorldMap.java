@@ -70,7 +70,8 @@ public class WorldMap {
         return entities.entrySet().stream()
                 .filter(entry -> Objects.equals(entry.getValue(), entity))
                 .map(Map.Entry::getKey)
-                .toList().getFirst();
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("cannot find coordinates for entity %s".formatted(entity.getClass().getSimpleName())));
     }
 
     public void addEntity(Coordinates coordinates, Entity entity) {
