@@ -10,7 +10,7 @@ import java.util.Objects;
 public class MoveCreaturesAction implements Action {
     @Override
     public void execute(WorldMap map) {
-        Objects.requireNonNull(map);
+        Objects.requireNonNull(map, "map must not be null");
 
         Collection<Entity> entities = map.getEntities();
 

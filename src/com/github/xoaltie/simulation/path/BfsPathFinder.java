@@ -18,11 +18,11 @@ public final class BfsPathFinder implements PathFinder {
     private static final int[][] DIRECTIONS = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
     public List<Coordinates> find(WorldMap map, Coordinates start, Class<? extends Entity> target) {
-        Objects.requireNonNull(map);
-        Objects.requireNonNull(start);
-        Objects.requireNonNull(target);
+        Objects.requireNonNull(map, "map must not be null");
+        Objects.requireNonNull(start, "start coordinates must not be null");
+        Objects.requireNonNull(target, "target must not be null");
         if (!map.isWithinBounds(start)) {
-            throw new IllegalArgumentException("Некорректные координаты. Выход за пределы карты.");
+            throw new IllegalArgumentException("coordinates %s are out of bounds. map size: %dx%d".formatted(start, map.getWidth(), map.getHeight()));
         }
 
         ArrayDeque<Coordinates> queue = new ArrayDeque<>();

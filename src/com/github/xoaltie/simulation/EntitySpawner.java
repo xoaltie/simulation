@@ -11,16 +11,16 @@ import java.util.function.Supplier;
 
 public final class EntitySpawner {
     public void spawn(WorldMap map, int countToSpawn, Supplier<? extends Entity> supplier) {
-        Objects.requireNonNull(map);
-        Objects.requireNonNull(supplier);
+        Objects.requireNonNull(map, "map must not be null");
+        Objects.requireNonNull(supplier, "supplier must not be null");
         if (countToSpawn < 0) {
-            throw new IllegalArgumentException("Нельзя заспавнить %d количество существ!".formatted(countToSpawn));
+            throw new IllegalArgumentException("count to spawn must be non-negative, but was: %d".formatted(countToSpawn));
         }
 
         List<Coordinates> emptyCell = map.getEmptyCells();
 
         if (emptyCell.isEmpty() || emptyCell.size() < countToSpawn) {
-            throw new IllegalStateException("Карта переполнена. Не удалось заспавнить существ!");
+            throw new IllegalStateException("not enough empty cells to spawn entities: requested %d, but only %d available".formatted(countToSpawn, emptyCell.size()));
         }
 
         Collections.shuffle(emptyCell);

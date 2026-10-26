@@ -17,7 +17,7 @@ public class WorldMap {
 
     public WorldMap(int width, int height) {
         if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException("Некорректный размер карты!");
+            throw new IllegalArgumentException("map size must be greater than zero, but was: %d %d".formatted(width, height));
         }
 
         this.width = width;
@@ -25,14 +25,14 @@ public class WorldMap {
     }
 
     public boolean isWithinBounds(Coordinates coordinates) {
-        Objects.requireNonNull(coordinates);
+        Objects.requireNonNull(coordinates, "coordinates must not be null");
         return coordinates.x() >= 0 && coordinates.y() >= 0 &&
                 coordinates.x() < width && coordinates.y() < height;
     }
 
     private void ensureWithinBounds(Coordinates coordinates) {
         if (!isWithinBounds(coordinates)) {
-            throw new IllegalArgumentException("Некорректные координаты. Выход за пределы карты.");
+            throw new IllegalArgumentException("coordinates %s are out of bounds. map size: %dx%d".formatted(coordinates, width, height));
         }
     }
 
@@ -66,7 +66,7 @@ public class WorldMap {
     }
 
     public Coordinates getCoordinates(Entity entity) {
-        Objects.requireNonNull(entity);
+        Objects.requireNonNull(entity, "entity must not be null");
         return entities.entrySet().stream()
                 .filter(entry -> Objects.equals(entry.getValue(), entity))
                 .map(Map.Entry::getKey)
@@ -74,12 +74,12 @@ public class WorldMap {
     }
 
     public void addEntity(Coordinates coordinates, Entity entity) {
-        Objects.requireNonNull(entity);
+        Objects.requireNonNull(entity, "entity must not be null");
         ensureWithinBounds(coordinates);
 
         Entity previousEntity = entities.putIfAbsent(coordinates, entity);
         if (previousEntity != null) {
-            throw new IllegalStateException("Некорректные координаты. Позиция занята другой сущностью.");
+            throw new IllegalStateException("cannot place entity: cell %s is already occupied".formatted(coordinates));
         }
     }
 
@@ -87,7 +87,7 @@ public class WorldMap {
         ensureWithinBounds(coordinates);
         Entity removedEntity = entities.remove(coordinates);
         if (removedEntity == null) {
-            throw new IllegalStateException("Некорректные координаты. Позиция не содержит сущности.");
+            throw new IllegalStateException("cannot remove entity: cell %s is empty".formatted(coordinates));
         }
     }
 
@@ -97,12 +97,12 @@ public class WorldMap {
 
         Entity entity = entities.get(from);
         if (entity == null) {
-            throw new IllegalStateException("Некорректные координаты. Позиция не содержит сущности.");
+            throw new IllegalStateException("cannot move entity: cell %s is empty".formatted(from));
         }
 
         Entity previousEntity = entities.putIfAbsent(to, entity);
         if (previousEntity != null) {
-            throw new IllegalStateException("Некорректные координаты. Позиция занята другой сущностью.");
+            throw new IllegalStateException("cannot move entity: cell %s is already occupied".formatted(to));
         }
 
         entities.remove(from);
