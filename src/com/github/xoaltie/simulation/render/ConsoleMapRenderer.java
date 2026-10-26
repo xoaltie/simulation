@@ -15,7 +15,7 @@ public final class ConsoleMapRenderer implements MapRenderer {
     }
 
     @Override
-    public void render(WorldMap map) {
+    public void render(WorldMap map, int turnCounter) {
         Objects.requireNonNull(map);
 
         StringBuilder sb = new StringBuilder();
@@ -30,6 +30,8 @@ public final class ConsoleMapRenderer implements MapRenderer {
             }
             sb.append(System.lineSeparator());
         }
+        sb.append("Текущий ход: ").append(turnCounter).append(System.lineSeparator());
+        sb.append("Для остановки игры на паузу нажмите Enter").append(System.lineSeparator());
         System.out.print(sb);
     }
 }

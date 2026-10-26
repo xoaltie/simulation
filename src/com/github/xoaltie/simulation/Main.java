@@ -16,16 +16,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final MenuRenderer menuRenderer = new ConsoleMenuRenderer();
+
     static void main() {
-        Scanner scanner = new Scanner(System.in);
         Simulation simulation = createSimulation();
-        MenuRenderer menuRenderer = new ConsoleMenuRenderer();
         while (true) {
             menuRenderer.printStartMenu();
             String input = scanner.nextLine().trim();
             switch (input) {
                 case "1":
-                    runSimulationLoop(simulation, scanner, menuRenderer);
+                    runSimulationLoop(simulation);
                     break;
                 case "2":
                     return;
@@ -46,20 +47,20 @@ public class Main {
         return simulation;
     }
 
-    private static void runSimulationLoop(Simulation simulation, Scanner scanner, MenuRenderer renderer) {
+    private static void runSimulationLoop(Simulation simulation) {
         simulation.start();
         while (true) {
             scanner.nextLine();
             simulation.pause();
-            if (!handlePauseMenu(simulation, scanner, renderer)) {
+            if (!handlePauseMenu(simulation)) {
                 return;
             }
         }
     }
 
-    private static boolean handlePauseMenu(Simulation simulation, Scanner scanner, MenuRenderer render) {
+    private static boolean handlePauseMenu(Simulation simulation) {
         while (true) {
-            render.printPauseMenu();
+            menuRenderer.printPauseMenu();
             String input = scanner.nextLine().trim();
             switch (input) {
                 case "1":
@@ -69,7 +70,7 @@ public class Main {
                     simulation.stop();
                     return false;
                 default:
-                    render.printInvalidInput();
+                    menuRenderer.printInvalidInput();
             }
         }
     }
