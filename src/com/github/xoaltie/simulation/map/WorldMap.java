@@ -101,6 +101,10 @@ public class WorldMap {
         entities.remove(from);
     }
 
+    public void clear() {
+        entities.clear();
+    }
+
     public int getWidth() {
         return width;
     }

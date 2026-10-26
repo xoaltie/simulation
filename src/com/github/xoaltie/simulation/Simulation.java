@@ -2,20 +2,22 @@ package com.github.xoaltie.simulation;
 
 import com.github.xoaltie.simulation.action.Action;
 import com.github.xoaltie.simulation.map.WorldMap;
-import com.github.xoaltie.simulation.render.Renderer;
+import com.github.xoaltie.simulation.render.MapRenderer;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 public final class Simulation {
+    private final Object lock = new Object();
     private final WorldMap map;
-    private final Renderer renderer;
+    private final MapRenderer renderer;
     private final List<Action> initActions;
     private final List<Action> turnActions;
     private int turnCounter;
+    private volatile boolean isRunning = false;
+    private volatile boolean isPaused = false;
 
-    public Simulation(WorldMap map, Renderer renderer, List<Action> initActions, List<Action> turnActions) {
+    public Simulation(WorldMap map, MapRenderer renderer, List<Action> initActions, List<Action> turnActions) {
         Objects.requireNonNull(map);
         Objects.requireNonNull(renderer);
         Objects.requireNonNull(initActions);
@@ -25,27 +27,74 @@ public final class Simulation {
         this.renderer = renderer;
         this.initActions = initActions;
         this.turnActions = turnActions;
-
-        performActions(initActions);
     }
 
     public void start() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            nextTurn();
-            scanner.nextLine();
-        }
-    }
+        reset();
+        performActions(initActions);
 
-    public void pause() {
-        // TODO: реализовать после написания готового игрового цикла
+        Thread thread = new Thread(() -> {
+            while (isRunning) {
+                synchronized (lock) {
+                    while (isPaused) {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+
+                if (!isRunning) {
+                    break;
+                }
+
+                nextTurn();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        thread.start();
     }
 
     public void nextTurn() {
         turnCounter++;
         renderer.render(map);
         System.out.printf("Текущий ход: %d\n", turnCounter);
+        System.out.println("Для остановки игры на паузу нажмите Enter\n");
         performActions(turnActions);
+    }
+
+    public void pause() {
+        synchronized (lock) {
+            isPaused = true;
+        }
+    }
+
+    public void resume() {
+        synchronized (lock) {
+            isPaused = false;
+            lock.notify();
+        }
+    }
+
+    public void stop() {
+        synchronized (lock) {
+            isRunning = false;
+            isPaused = false;
+            lock.notify();
+        }
+    }
+
+    private void reset() {
+        turnCounter = 0;
+        isRunning = true;
+        isPaused = false;
+        map.clear();
     }
 
     private void performActions(List<Action> actions) {
