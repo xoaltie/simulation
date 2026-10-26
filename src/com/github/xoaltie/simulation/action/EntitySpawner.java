@@ -1,4 +1,4 @@
-package com.github.xoaltie.simulation;
+package com.github.xoaltie.simulation.action;
 
 import com.github.xoaltie.simulation.entity.Entity;
 import com.github.xoaltie.simulation.map.Coordinates;
@@ -15,6 +15,10 @@ public final class EntitySpawner {
         Objects.requireNonNull(supplier, "supplier must not be null");
         if (countToSpawn < 0) {
             throw new IllegalArgumentException("count to spawn must be non-negative, but was: %d".formatted(countToSpawn));
+        }
+
+        if (countToSpawn == 0) {
+            return;
         }
 
         List<Coordinates> emptyCell = map.getEmptyCells();

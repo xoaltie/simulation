@@ -1,6 +1,7 @@
 package com.github.xoaltie.simulation;
 
 import com.github.xoaltie.simulation.action.Action;
+import com.github.xoaltie.simulation.action.EntitySpawner;
 import com.github.xoaltie.simulation.action.MapPopulationAction;
 import com.github.xoaltie.simulation.action.MoveCreaturesAction;
 import com.github.xoaltie.simulation.action.ReplenishEntitiesAction;
