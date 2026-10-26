@@ -29,24 +29,27 @@ public abstract sealed class Creature extends Entity permits Herbivore, Predator
         this.targetType = targetType;
     }
 
-    public void makeMove(WorldMap map) {
+    public final void makeMove(WorldMap map) {
         Objects.requireNonNull(map);
 
         Coordinates current = map.getCoordinates(this);
-        List<Coordinates> path = getPathFinder().find(map, current, targetType);
+        List<Coordinates> path = pathFinder.find(map, current, targetType);
         if (path.isEmpty()) {
             return;
         }
 
-        for (int i = 0; i < getSpeed(); i++) {
+        for (int i = 0; i < speed; i++) {
             int nextCellIndex = Math.min(i, path.size() - 1);
             Coordinates nextCell = path.get(nextCellIndex);
+
             if (map.isCellEmpty(nextCell)) {
                 map.moveEntity(current, nextCell);
                 current = nextCell;
                 continue;
             }
+
             Entity target = map.getEntity(nextCell).orElseThrow();
+
             boolean isTargetDead = interact(map, nextCell, target);
             if (isTargetDead) {
                 map.moveEntity(current, nextCell);
@@ -55,34 +58,13 @@ public abstract sealed class Creature extends Entity permits Herbivore, Predator
         }
     }
 
+    protected abstract boolean interact(WorldMap map, Coordinates targetCoordinates, Entity target);
+
     public boolean isAlive() {
         return health > 0;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        if (health < 0) {
-            throw new IllegalArgumentException("Здоровье существа не может быть %d!".formatted(health));
-        }
-
-        this.health = health;
-    }
-
     public void takeDamage(int damage) {
-        int newHealth = Math.max(0, getHealth() - damage);
-        setHealth(newHealth);
+        health = Math.max(0, health - damage);
     }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public PathFinder getPathFinder() {
-        return pathFinder;
-    }
-
-    protected abstract boolean interact(WorldMap map, Coordinates targetCoordinates, Entity target);
 }

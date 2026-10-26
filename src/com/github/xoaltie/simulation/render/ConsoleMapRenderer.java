@@ -19,6 +19,7 @@ public final class ConsoleMapRenderer implements MapRenderer {
         Objects.requireNonNull(map);
 
         StringBuilder sb = new StringBuilder();
+
         sb.append(System.lineSeparator());
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
@@ -32,6 +33,7 @@ public final class ConsoleMapRenderer implements MapRenderer {
         }
         sb.append("Текущий ход: ").append(turnCounter).append(System.lineSeparator());
         sb.append("Для остановки игры на паузу нажмите Enter").append(System.lineSeparator());
+
         System.out.print(sb);
     }
 }

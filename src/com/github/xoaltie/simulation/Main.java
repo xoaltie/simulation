@@ -21,6 +21,7 @@ public class Main {
 
     static void main() {
         Simulation simulation = createSimulation();
+
         while (true) {
             menuRenderer.printStartMenu();
             String input = scanner.nextLine().trim();
@@ -43,8 +44,8 @@ public class Main {
         MapRenderer mapRenderer = new ConsoleMapRenderer(spriteMapper);
         List<Action> initActions = List.of(new MapPopulationAction(spawner));
         List<Action> turnActions = List.of(new MoveCreaturesAction(), new ReplenishEntitiesAction(spawner));
-        Simulation simulation = new Simulation(map, mapRenderer, initActions, turnActions);
-        return simulation;
+
+        return new Simulation(map, mapRenderer, initActions, turnActions);
     }
 
     private static void runSimulationLoop(Simulation simulation) {

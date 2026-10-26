@@ -38,15 +38,18 @@ public final class BfsPathFinder implements PathFinder {
                 if (visited.contains(neighbor)) {
                     continue;
                 }
+
                 Optional<Entity> neighborEntity = map.getEntity(neighbor);
                 if (neighborEntity.isPresent() && target.isInstance(neighborEntity.get())) {
                     parent.put(neighbor, current);
                     return getPath(parent, neighbor);
                 }
+
                 if (neighborEntity.isPresent()) {
                     visited.add(neighbor);
                     continue;
                 }
+
                 parent.put(neighbor, current);
                 queue.add(neighbor);
                 visited.add(neighbor);
@@ -58,22 +61,26 @@ public final class BfsPathFinder implements PathFinder {
 
     private List<Coordinates> getNeighbors(WorldMap map, Coordinates start) {
         List<Coordinates> neighbors = new ArrayList<>();
+
         for (int[] direction : DIRECTIONS) {
             Coordinates neighbor = new Coordinates(start.x() + direction[0], start.y() + direction[1]);
             if (map.isWithinBounds(neighbor)) {
                 neighbors.add(neighbor);
             }
         }
+
         return neighbors;
     }
 
     private List<Coordinates> getPath(Map<Coordinates, Coordinates> parents, Coordinates targetCoordinates) {
         List<Coordinates> path = new ArrayList<>();
         Coordinates current = targetCoordinates;
+
         while (current != null) {
             path.add(current);
             current = parents.get(current);
         }
+
         path.removeLast();
         return path.reversed();
     }

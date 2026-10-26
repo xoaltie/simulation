@@ -13,13 +13,13 @@ import java.util.Optional;
 public class WorldMap {
     private final int width;
     private final int height;
-
     private final Map<Coordinates, Entity> entities = new HashMap<>();
 
     public WorldMap(int width, int height) {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("Некорректный размер карты!");
         }
+
         this.width = width;
         this.height = height;
     }
@@ -30,14 +30,53 @@ public class WorldMap {
                 coordinates.x() < width && coordinates.y() < height;
     }
 
+    private void ensureWithinBounds(Coordinates coordinates) {
+        if (!isWithinBounds(coordinates)) {
+            throw new IllegalArgumentException("Некорректные координаты. Выход за пределы карты.");
+        }
+    }
+
     public boolean isCellEmpty(Coordinates coordinates) {
         ensureWithinBounds(coordinates);
         return !entities.containsKey(coordinates);
     }
 
+    public Optional<Entity> getEntity(Coordinates coordinates) {
+        ensureWithinBounds(coordinates);
+        return Optional.ofNullable(entities.get(coordinates));
+    }
+
+    public Collection<Entity> getEntities() {
+        return List.copyOf(entities.values());
+    }
+
+    public List<Coordinates> getEmptyCells() {
+        List<Coordinates> emptyCell = new ArrayList<>();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Coordinates coordinates = new Coordinates(x, y);
+                if (!entities.containsKey(coordinates)) {
+                    emptyCell.add(coordinates);
+                }
+            }
+        }
+
+        return emptyCell;
+    }
+
+    public Coordinates getCoordinates(Entity entity) {
+        Objects.requireNonNull(entity);
+        return entities.entrySet().stream()
+                .filter(entry -> Objects.equals(entry.getValue(), entity))
+                .map(Map.Entry::getKey)
+                .toList().getFirst();
+    }
+
     public void addEntity(Coordinates coordinates, Entity entity) {
         Objects.requireNonNull(entity);
         ensureWithinBounds(coordinates);
+
         Entity previousEntity = entities.putIfAbsent(coordinates, entity);
         if (previousEntity != null) {
             throw new IllegalStateException("Некорректные координаты. Позиция занята другой сущностью.");
@@ -52,40 +91,7 @@ public class WorldMap {
         }
     }
 
-    public Optional<Entity> getEntity(Coordinates coordinates) {
-        ensureWithinBounds(coordinates);
-        return Optional.ofNullable(entities.get(coordinates));
-    }
-
-    public Coordinates getCoordinates(Entity entity) {
-        Objects.requireNonNull(entity);
-        return entities.entrySet().stream()
-                .filter(entry -> Objects.equals(entry.getValue(), entity))
-                .map(Map.Entry::getKey)
-                .toList().getFirst();
-    }
-
-    public Collection<Entity> getEntities() {
-        return List.copyOf(entities.values());
-    }
-
-    public List<Coordinates> getEmptyCells() {
-        List<Coordinates> emptyCell = new ArrayList<>();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Coordinates coordinates = new Coordinates(x, y);
-                if (!entities.containsKey(coordinates)) {
-                    emptyCell.add(coordinates);
-                }
-            }
-        }
-
-        return emptyCell;
-    }
-
     public void moveEntity(Coordinates from, Coordinates to) {
-        Objects.requireNonNull(from);
-        Objects.requireNonNull(to);
         ensureWithinBounds(from);
         ensureWithinBounds(to);
 
@@ -93,6 +99,7 @@ public class WorldMap {
         if (entity == null) {
             throw new IllegalStateException("Некорректные координаты. Позиция не содержит сущности.");
         }
+
         Entity previousEntity = entities.putIfAbsent(to, entity);
         if (previousEntity != null) {
             throw new IllegalStateException("Некорректные координаты. Позиция занята другой сущностью.");
@@ -111,11 +118,5 @@ public class WorldMap {
 
     public int getHeight() {
         return height;
-    }
-
-    private void ensureWithinBounds(Coordinates coordinates) {
-        if (!isWithinBounds(coordinates)) {
-            throw new IllegalArgumentException("Некорректные координаты. Выход за пределы карты.");
-        }
     }
 }
