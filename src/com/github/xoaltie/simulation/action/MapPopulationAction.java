@@ -1,6 +1,5 @@
 package com.github.xoaltie.simulation.action;
 
-import com.github.xoaltie.simulation.EntitySpawner;
 import com.github.xoaltie.simulation.config.SimulationConfig;
 import com.github.xoaltie.simulation.entity.Grass;
 import com.github.xoaltie.simulation.entity.Herbivore;
