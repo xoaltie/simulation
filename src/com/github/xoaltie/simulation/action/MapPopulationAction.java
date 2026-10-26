@@ -20,7 +20,7 @@ public class MapPopulationAction implements Action {
 
     @Override
     public void execute(WorldMap map) {
-        Objects.requireNonNull(map);
+        Objects.requireNonNull(map, "map must not be null");
 
         spawner.spawn(map, SimulationConfig.ROCK_START_COUNT, Rock::new);
         spawner.spawn(map, SimulationConfig.TREE_START_COUNT, Tree::new);

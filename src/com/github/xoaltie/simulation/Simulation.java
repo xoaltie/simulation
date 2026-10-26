@@ -18,10 +18,10 @@ public final class Simulation {
     private volatile boolean isPaused = false;
 
     public Simulation(WorldMap map, MapRenderer renderer, List<Action> initActions, List<Action> turnActions) {
-        Objects.requireNonNull(map);
-        Objects.requireNonNull(renderer);
-        Objects.requireNonNull(initActions);
-        Objects.requireNonNull(turnActions);
+        Objects.requireNonNull(map, "map must not be null");
+        Objects.requireNonNull(renderer, "renderer must not be null");
+        Objects.requireNonNull(initActions, "initial actions must not be null");
+        Objects.requireNonNull(turnActions, "turn actions must not be null");
 
         this.map = map;
         this.renderer = renderer;

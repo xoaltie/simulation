@@ -14,13 +14,13 @@ public abstract sealed class Creature extends Entity permits Herbivore, Predator
     private int health;
 
     public Creature(int health, int speed, PathFinder pathFinder, Class<? extends Entity> targetType) {
-        Objects.requireNonNull(pathFinder);
-        Objects.requireNonNull(targetType);
+        Objects.requireNonNull(pathFinder, "path finder must not be null");
+        Objects.requireNonNull(targetType, "target type must not be null");
         if (health <= 0) {
-            throw new IllegalArgumentException("Здоровье существа не может быть %d!".formatted(health));
+            throw new IllegalArgumentException("health must be positive, but was: %d".formatted(health));
         }
         if (speed <= 0) {
-            throw new IllegalArgumentException("Скорость существа не может быть %d!".formatted(speed));
+            throw new IllegalArgumentException("speed must be positive, but was: %d".formatted(speed));
         }
 
         this.health = health;
@@ -30,7 +30,7 @@ public abstract sealed class Creature extends Entity permits Herbivore, Predator
     }
 
     public final void makeMove(WorldMap map) {
-        Objects.requireNonNull(map);
+        Objects.requireNonNull(map, "map must not be null");
 
         Coordinates current = map.getCoordinates(this);
         List<Coordinates> path = pathFinder.find(map, current, targetType);

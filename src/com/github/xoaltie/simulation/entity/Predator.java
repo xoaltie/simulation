@@ -10,7 +10,7 @@ public final class Predator extends Creature {
     public Predator(int health, int speed, int attack) {
         super(health, speed, new BfsPathFinder(), Herbivore.class);
         if (attack <= 0) {
-            throw new IllegalArgumentException("Атака существа не может быть %d!".formatted(attack));
+            throw new IllegalArgumentException("attack must be positive, but was: %d".formatted(attack));
         }
 
         this.attack = attack;
