@@ -63,9 +63,7 @@ public final class Simulation {
 
     public void nextTurn() {
         turnCounter++;
-        renderer.render(map);
-        System.out.printf("Текущий ход: %d\n", turnCounter);
-        System.out.println("Для остановки игры на паузу нажмите Enter\n");
+        renderer.render(map, turnCounter);
         performActions(turnActions);
     }
 
