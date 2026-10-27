@@ -76,3 +76,7 @@
 ## Автор
 
 [xoaltie](https://github.com/xoaltie)
+
+## Ревью
+
+https://github.com/raketareview/simulation_review/blob/master/content/rev-sim176-dariam-xoaltie.md
